@@ -1,0 +1,14 @@
+services:
+  rabbit-service:
+    image: rabbitmq:3-management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    restart: no
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+    volumes:
+      - rabbitmq-service:/var/lib/rabbitmq/
+volumes:
+  rabbitmq-service:
