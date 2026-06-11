@@ -15,6 +15,9 @@ public class RabbitMQConfig {
 
     public static final String POST_PROCESSING_EXCHANGE = "text-processor-service.post-processing.v1.e";
     public static final String POST_PROCESSING_RESULT_EXCHANGE = "post-service.post-processing-result.v1.e";
+    public static final String POST_PROCESSING_DLX = "text-processor-service.post-processing.v1.dlx";
+    public static final String POST_PROCESSING_DLQ = "text-processor-service.post-processing.v1.dlq";
+    public static final String POST_PROCESSING_DLQ_ROUTING_KEY = "key.post.processing.dlq";
 
     @Bean
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
@@ -28,7 +31,11 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue postProcessingQueue() {
-        return QueueBuilder.durable(POST_PROCESSING_QUEUE).build();
+        return QueueBuilder
+                .durable(POST_PROCESSING_QUEUE)
+                .deadLetterExchange(POST_PROCESSING_DLX)
+                .deadLetterRoutingKey(POST_PROCESSING_DLQ_ROUTING_KEY)
+                .build();
     }
 
     @Bean
@@ -39,11 +46,31 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue postProcessingDlq() {
+        return QueueBuilder.durable(POST_PROCESSING_DLQ).build();
+    }
+
+    @Bean
+    public DirectExchange postProcessingDlx() {
+        return ExchangeBuilder
+                .directExchange(POST_PROCESSING_DLX)
+                .build();
+    }
+
+    @Bean
     public Binding bindingPostProcessing() {
         return BindingBuilder
                 .bind(postProcessingQueue())
                 .to(postProcessingExchange())
                 .with("key.post.processing");
+    }
+
+    @Bean
+    public Binding bindingPostProcessingDlq() {
+        return BindingBuilder
+                .bind(postProcessingDlq())
+                .to(postProcessingDlx())
+                .with(POST_PROCESSING_DLQ_ROUTING_KEY);
     }
 
 }

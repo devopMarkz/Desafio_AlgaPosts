@@ -25,6 +25,10 @@ public class RabbitMQListener {
     public void processarResult(PostQueueInput input) {
         log.info("Result recebido: {id: {}, wordCount: {}, calculatedValue: {}}", input.getPostId(), input.getWordCount(), input.getCalculatedValue());
 
+        if(input.getWordCount() == 9) {
+            throw new IllegalArgumentException();
+        }
+
         Post post = postRepository.buscarPorId(UUID.fromString(input.getPostId())).orElseThrow();
         post.registrarProcessamento(input.getWordCount(), input.getCalculatedValue());
 

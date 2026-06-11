@@ -22,7 +22,7 @@ class PostTest {
     void deveRejeitarTituloEmBranco() {
         assertThatThrownBy(() -> new Post(" ", "Corpo do post", "Marcos"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Titulo precisa ser preenchido.");
+                .hasMessage("Título precisa ser preenchido.");
     }
 
     @Test

@@ -18,6 +18,16 @@ spring:
     port: 5672
     username: "rabbitmq"
     password: "rabbitmq"
+    listener:
+      simple:
+        default-requeue-rejected: false
+        prefetch: 2
+        retry:
+          enabled: true
+          initial-interval: 10s
+          max-interval: 20s
+          multiplier: 2
+          max-retries: 3
 
   jpa:
     open-in-view: false

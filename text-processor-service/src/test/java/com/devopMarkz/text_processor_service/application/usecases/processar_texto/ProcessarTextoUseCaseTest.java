@@ -18,9 +18,9 @@ class ProcessarTextoUseCaseTest {
 
         ProcessarTextoOutput output = useCase.execute(new ProcessarTextoInput(postId, "um texto com cinco palavras"));
 
-        assertThat(output.postId()).isEqualTo(postId);
-        assertThat(output.wordCount()).isEqualTo(5);
-        assertThat(output.calculatedValue()).isEqualByComparingTo(new BigDecimal("0.50"));
+        assertThat(output.getPostId()).isEqualTo(postId);
+        assertThat(output.getWordCount()).isEqualTo(5);
+        assertThat(output.getCalculatedValue()).isEqualByComparingTo(new BigDecimal("0.50"));
     }
 
     @Test
@@ -29,8 +29,8 @@ class ProcessarTextoUseCaseTest {
 
         ProcessarTextoOutput output = useCase.execute(new ProcessarTextoInput(postId, "   "));
 
-        assertThat(output.wordCount()).isZero();
-        assertThat(output.calculatedValue()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(output.getWordCount()).isZero();
+        assertThat(output.getCalculatedValue()).isEqualByComparingTo(BigDecimal.ZERO);
     }
 
     @Test
